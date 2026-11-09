@@ -11,14 +11,14 @@ pub(crate) const IOS_CLIENT_ID: &str = "58bd3c95768941ea9eb4350aaa033eb3";
 // android or ios needs to be mocked, the `os_version` has to be set to a valid version.
 // Otherwise, client-token or login5 requests will fail with a generic invalid-credential error.
 ///
-/// Android presents itself as Linux: the browser sign-in issues tokens for
-/// the desktop (keymaster) client id, and Spotify refuses those with
-/// "invalid credentials" when the session claims the Android client id and
-/// platform. As Linux, the client id, handshake platform, login packet and
-/// client-token data all match the token, as on desktop Linux.
+/// Android and iOS present themselves as Linux: the browser sign-in issues
+/// tokens for the desktop (keymaster) client id, and Spotify refuses those
+/// with "invalid credentials" when the session claims a mobile client id
+/// and platform. As Linux, the client id, handshake platform, login packet
+/// and client-token data all match the token, as on desktop Linux.
 ///
 /// See [std::env::consts::OS]
-pub const OS: &str = if cfg!(target_os = "android") {
+pub const OS: &str = if cfg!(any(target_os = "android", target_os = "ios")) {
     "linux"
 } else {
     std::env::consts::OS
